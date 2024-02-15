@@ -16,6 +16,22 @@ variable "zone" {
     default = "us-central1-c"
 }
 
+variable "vpc_names" {
+  description = "Names of the VPCs to create"
+  type        = list(string)
+  default     = ["vpc1", "vpc2"]
+}
+
+
+variable "vpcs" {
+  description = "Map of VPC configurations"
+  type = map(object({
+    region                 = string
+    webapp_subnet_cidr     = string
+    db_subnet_cidr         = string
+  }))
+}
+
 variable "webapp_subnet_cidr" {
     description = "web_subnet description"
     type = string
