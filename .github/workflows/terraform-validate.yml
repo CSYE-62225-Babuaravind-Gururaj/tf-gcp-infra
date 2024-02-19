@@ -25,4 +25,4 @@ jobs:
       run: terraform init
     
     - name: Terraform Validate
-      run: terraform validate
+      run: terraform validat
