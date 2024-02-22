@@ -17,8 +17,36 @@ resource "google_compute_network" "vpc_network" {
   for_each                = var.vpcs
   name                    = each.key
   auto_create_subnetworks = false
-  routing_mode            = "REGIONAL"
+  routing_mode            = var.network_routing_mode
   delete_default_routes_on_create = true
+}
+
+resource "google_compute_firewall" "allow_http" {
+  for_each = var.vpcs
+  name    = "${each.key}-allow-http"
+  network = google_compute_network.vpc_network[each.key].self_link
+
+  allow {
+    protocol = "tcp"
+    ports    = ["80"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+  target_tags = ["webapp"]
+}
+
+resource "google_compute_firewall" "deny_ssh" {
+  for_each = var.vpcs
+  name    = "${each.key}-deny-ssh"
+  network = google_compute_network.vpc_network[each.key].self_link
+
+  deny {
+    protocol = "tcp"
+    ports    = ["22"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+  target_tags = ["webapp"]
 }
 
 resource "google_compute_subnetwork" "webapp_subnet" {
@@ -42,6 +70,24 @@ resource "google_compute_route" "webapp_route" {
   name          = "${each.key}-route"
   dest_range    = "0.0.0.0/0"
   network       = google_compute_network.vpc_network[each.key].self_link
-  next_hop_gateway = "default-internet-gateway"
+  next_hop_gateway = var.next_hop_gateway
+  tags = ["webapp"]
+}
+resource "google_compute_instance" "custom_instance" {
+  name         = "custom-instance-${var.instance_vpc_name}"
+  machine_type = var.machine_type
+  zone         = var.zone
+  network_interface {
+    subnetwork = google_compute_subnetwork.webapp_subnet[var.instance_vpc_name].self_link
+  }
+
+  boot_disk {
+    initialize_params {
+      image = var.image  # Reference to your existing custom image
+      size  = var.size
+      type  = var.type
+    }
+  }
+
   tags = ["webapp"]
 }
