@@ -79,3 +79,28 @@ variable "image" {
   description = "Disk image"
   default = "centos-stream-8"
 }
+
+variable "protocol" {
+  description = "protocol type"
+  default = "tcp"
+}
+
+variable "httpport" {
+  description = "http ports allowed"
+  default = "8080"
+}
+
+variable "sshport" {
+  description = "http ports denied"
+  default = "22"
+}
+
+variable "source_ranges" {
+  description = "source ranges"
+  default = "0.0.0.0/0"
+}
+
+variable "dest_range" {
+  description = "dest_range"
+  default = "0.0.0.0/0"
+}
