@@ -40,7 +40,7 @@ resource "google_compute_firewall" "deny_ssh" {
   name    = "${each.key}-deny-ssh"
   network = google_compute_network.vpc_network[each.key].self_link
 
-  deny {
+  allow {
     protocol = "tcp"
     ports    = ["22"]
   }
@@ -79,6 +79,9 @@ resource "google_compute_instance" "custom_instance" {
   zone         = var.zone
   network_interface {
     subnetwork = google_compute_subnetwork.webapp_subnet[var.instance_vpc_name].self_link
+    access_config {
+      // Ephemeral public IP
+    }
   }
 
   boot_disk {
