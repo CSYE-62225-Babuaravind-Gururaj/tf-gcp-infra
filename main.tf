@@ -27,11 +27,11 @@ resource "google_compute_firewall" "allow_http" {
   network = google_compute_network.vpc_network[each.key].self_link
 
   allow {
-    protocol = "tcp"
-    ports    = ["8080"]
+    protocol = var.protocol
+    ports    = [var.httpport]
   }
 
-  source_ranges = ["0.0.0.0/0"]
+  source_ranges = [var.source_ranges]
   target_tags = ["webapp"]
 }
 
@@ -41,11 +41,11 @@ resource "google_compute_firewall" "deny_ssh" {
   network = google_compute_network.vpc_network[each.key].self_link
 
   deny {
-    protocol = "tcp"
-    ports    = ["22"]
+    protocol = var.protocol
+    ports    = [var.sshport]
   }
 
-  source_ranges = ["0.0.0.0/0"]
+  source_ranges = [var.source_ranges]
   target_tags = ["webapp"]
 }
 
@@ -68,7 +68,7 @@ resource "google_compute_subnetwork" "db_subnet" {
 resource "google_compute_route" "webapp_route" {
   for_each      = var.vpcs
   name          = "${each.key}-route"
-  dest_range    = "0.0.0.0/0"
+  dest_range    = var.dest_range
   network       = google_compute_network.vpc_network[each.key].self_link
   next_hop_gateway = var.next_hop_gateway
   tags = ["webapp"]
@@ -80,7 +80,6 @@ resource "google_compute_instance" "custom_instance" {
   network_interface {
     subnetwork = google_compute_subnetwork.webapp_subnet[var.instance_vpc_name].self_link
     access_config {
-      // Ephemeral public IP
     }
   }
 
