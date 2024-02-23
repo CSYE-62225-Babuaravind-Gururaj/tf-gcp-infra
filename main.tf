@@ -40,7 +40,7 @@ resource "google_compute_firewall" "deny_ssh" {
   name    = "${each.key}-deny-ssh"
   network = google_compute_network.vpc_network[each.key].self_link
 
-  allow {
+  deny {
     protocol = "tcp"
     ports    = ["22"]
   }
