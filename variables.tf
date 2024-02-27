@@ -164,3 +164,9 @@ variable "db_address_type" {
   default     = "INTERNAL"
   description = "Database global compute address type"
 }
+
+variable "service_network" {
+  type        = string
+  default     = "servicenetworking.googleapis.com"
+  description = "Private network access"
+}

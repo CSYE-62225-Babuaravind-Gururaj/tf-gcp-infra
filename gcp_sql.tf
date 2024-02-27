@@ -1,7 +1,7 @@
 resource "google_service_networking_connection" "db_private_vpc_conn" {
   for_each                  = var.vpcs
-  network                   = google_compute_network.vpc[count.index].id
-  service                   = var.SERVICE_NETWORK_API
+  network                   = google_compute_network.vpc_network[each.key].id
+  service                   = var.service_network
   reserved_peering_ranges   = [google_compute_global_address.db_private_ip[each.key].name]
 }
 
@@ -43,7 +43,7 @@ resource "google_compute_global_address" "db_private_ip" {
   purpose       = var.db_address_purpose
   prefix_length = var.db_address_prefix
   address_type  = var.db_address_type
-  network       = google_compute_network.vpc[each.key].id
+  network       = google_compute_network.vpc_network[each.key].id
 }
 
 resource "random_password" "password" {
