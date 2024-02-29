@@ -53,11 +53,9 @@ resource "google_compute_firewall" "sql_access" {
     ports    = [var.db_port]
   }
 
-  # source_ranges = var.source_ranges
+  source_ranges = [var.source_ranges]
   source_tags = [ "webapp" ]
-  destination_ranges = [
-    google_sql_database_instance.database_instance[each.key].first_ip_address
-  ]
+  destination_ranges = [google_sql_database_instance.database_instance[each.key].first_ip_address]
 }
 
 resource "google_compute_firewall" "deny_sql_access" {

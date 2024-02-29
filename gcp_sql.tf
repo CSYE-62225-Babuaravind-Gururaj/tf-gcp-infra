@@ -19,11 +19,11 @@ resource "google_sql_database_instance" "database_instance" {
     disk_type         = var.db_disk_type
 
     ip_configuration {
-        authorized_networks {
-        name            = "Network Name"
-        value           = "192.0.2.0/24"
-        expiration_time = "3021-11-15T16:19:00.094Z"
-        }
+        # authorized_networks {
+        # name            = "Network Name"
+        # value           = "192.0.2.0/24"
+        # expiration_time = "3021-11-15T16:19:00.094Z"
+        # }
         ipv4_enabled                                  = false
         private_network                               = google_compute_network.vpc_network[each.key].id
         enable_private_path_for_google_cloud_services = true
