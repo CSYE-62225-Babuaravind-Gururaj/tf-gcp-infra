@@ -96,8 +96,9 @@ variable "sshport" {
 }
 
 variable "source_ranges" {
-  description = "source ranges"
-  default = "0.0.0.0/0"
+  type        = string
+  default     = "0.0.0.0/0"
+  description = "Entire source range"
 }
 
 variable "dest_range" {
@@ -169,4 +170,28 @@ variable "service_network" {
   type        = string
   default     = "servicenetworking.googleapis.com"
   description = "Private network access"
+}
+
+variable "ingress" {
+  type        = string
+  default     = "INGRESS"
+  description = "Firewall incoming requests"
+}
+
+variable "firewall_allow_priority" {
+  type        = number
+  default     = 1000
+  description = "Priority for allowing app port firewall"
+}
+
+variable "db_port" {
+  type        = string
+  default     = "5432"
+  description = "Cloud PostgreSQL port"
+}
+
+variable "firewall_deny_priority" {
+  type        = number
+  default     = 1001
+  description = "Priority for denying app port firewall"
 }
