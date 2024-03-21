@@ -195,3 +195,15 @@ variable "firewall_deny_priority" {
   default     = 1001
   description = "Priority for denying app port firewall"
 }
+
+variable "dns_zone_name" {
+  type        = string
+  default     = "webapp"
+  description = "DNS zone for Cloud DNS"
+}
+
+variable "dns_name" {
+  type        = string
+  default     = "babuaravind-gururaj.me."
+  description = "Website DNS"
+}
