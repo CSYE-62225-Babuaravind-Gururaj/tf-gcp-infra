@@ -10,6 +10,13 @@ resource "google_compute_instance" "custom_instance" {
     }
   }
 
+  service_account {
+    email  = google_service_account.service_account.email
+    scopes = [
+      "https://www.googleapis.com/auth/cloud-platform",
+    ]
+  }
+
   boot_disk {
     initialize_params {
       image = var.image
@@ -31,4 +38,36 @@ resource "google_compute_instance" "custom_instance" {
     db_name          = google_sql_database.database[each.key].name
   })
 
+}
+
+resource "google_dns_record_set" "a_record" {
+  for_each     = var.vpcs
+  name         = var.dns_name
+  type         = "A"
+  ttl          = 300
+  managed_zone = var.dns_zone_name
+  rrdatas      = [google_compute_instance.custom_instance[each.key].network_interface[0].access_config[0].nat_ip]
+}
+
+resource "google_service_account" "service_account" {
+  account_id   = "service-account-id"
+  display_name = "Service Account"
+}
+
+resource "google_project_iam_binding" "logging_admin_binding" {
+  project = var.project
+  role    = "roles/logging.admin"
+
+  members = [
+    "serviceAccount:${google_service_account.service_account.email}",
+  ]
+}
+
+resource "google_project_iam_binding" "monitoring_metric_writer_binding" {
+  project = var.project
+  role    = "roles/monitoring.metricWriter"
+
+  members = [
+    "serviceAccount:${google_service_account.service_account.email}",
+  ]
 }
