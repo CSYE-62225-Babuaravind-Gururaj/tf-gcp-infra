@@ -207,3 +207,63 @@ variable "dns_name" {
   default     = "babuaravind-gururaj.me."
   description = "Website DNS"
 }
+
+variable "mailgun_api_key" {
+  type = string
+  default = "68cce657fa6d365a396c07445aaf856f-f68a26c9-fb58f577"
+  description = "mailgun api key to send email"
+}
+
+variable "sender_domain" {
+  type = string
+  default = "babuaravind-gururaj.me"
+  description = "my registered domain"
+}
+
+variable "function_entry" {
+  type = string
+  default = "SendVerificationEmail"
+  description = "entry point for the cloud function"
+}
+
+variable "go_runtime" {
+  type = string
+  default = "go121"
+  description = "runtime go environment"
+}
+
+variable "cloud_func_topic" {
+  type = string
+  default = "verify_email"
+  description = "cloud function topic"
+}
+
+variable "cloud_func_memory" {
+  type  = string
+  default = "256M"
+  description = "cloud function available memory"  
+}
+
+variable "cloud_func_timeout" {
+  type  =  number
+  default = 60
+  description = "cloud function timeout value"
+}
+
+variable "cloud_func_ingress" {
+  type  = string
+  default = "ALLOW_INTERNAL_ONLY"
+  description = "ingress for cloud function"
+}
+
+variable "cloud_func_role" {
+  type  = string
+  default = "roles/cloudfunctions.invoker"
+  description = "cloud function role"
+}
+
+variable "cloud_func_event_type" {
+  type  =  string
+  default = "google.cloud.pubsub.topic.v1.messagePublished"
+  description = "Event type for cloud function event trigger"
+}

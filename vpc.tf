@@ -31,3 +31,20 @@ resource "google_compute_route" "webapp_route" {
   next_hop_gateway = var.next_hop_gateway
   tags = ["webapp"]
 }
+
+resource "google_compute_subnetwork" "serverless" {
+  for_each      = var.vpcs
+  ip_cidr_range = "10.0.3.0/28"
+  name          = "${each.key}-serverless"
+  network       = google_compute_network.vpc_network[each.key].id
+  region        = var.region
+}
+
+resource "google_vpc_access_connector" "connector" {
+  for_each      = var.vpcs
+  name          = "vpc-con"
+  subnet {
+    name = google_compute_subnetwork.serverless[each.key].name
+  }
+  machine_type = "f1-micro"
+}
