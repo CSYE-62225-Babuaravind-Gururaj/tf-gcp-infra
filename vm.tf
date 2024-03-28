@@ -36,6 +36,7 @@ resource "google_compute_instance" "custom_instance" {
     username         = google_sql_user.users[each.key].name
     password         = google_sql_user.users[each.key].password
     db_name          = google_sql_database.database[each.key].name
+    GCP_PROJECT_ID   = var.project
   })
 
 }

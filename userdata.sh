@@ -11,6 +11,7 @@ Environment=DBPORT=${db_port}
 Environment=DBUSER=${username}
 Environment=DBPASS=${password}
 Environment=DBNAME=${db_name}
+Environment=GCP_PROJECT_ID=${GCP_PROJECT_ID}
 ExecStart=/usr/local/bin/webapp
 
 [Install]
