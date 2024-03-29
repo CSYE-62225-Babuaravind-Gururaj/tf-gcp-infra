@@ -23,9 +23,10 @@ resource "google_cloudfunctions2_function" "verify_email_function" {
     all_traffic_on_latest_revision = true
     service_account_email          = google_service_account.service_account.email
     environment_variables = {
-      //CSYE6225_SQL_DB_CONNSTR = "jdbc:mysql://${google_sql_database_instance.database_instance[each.key].ip_address.0.ip_address}/${google_sql_database.database[count.index].name}"
+      DB_HOST = "${google_sql_database_instance.database_instance[each.key].ip_address.0.ip_address}"
       DBUSER                  = "${google_sql_user.users[each.key].name}"
       DBPASS                  = "${google_sql_user.users[each.key].password}"
+      DBNAME = "${google_sql_database.database[each.key].name}"
       MAILGUN_API_KEY         = var.mailgun_api_key
       SENDER_DOMAIN           = var.sender_domain
     }
