@@ -36,8 +36,9 @@ resource "google_cloudfunctions2_function" "verify_email_function" {
 
   event_trigger {
     trigger_region = var.region
-    event_type     = var.cloud_func_event_type
+    event_type     = "google.cloud.pubsub.topic.v1.messagePublished"
     pubsub_topic   = google_pubsub_topic.verify_email_topic.id
+    retry_policy   = "RETRY_POLICY_DO_NOT_RETRY"
   }
 
 }

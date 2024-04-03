@@ -12,6 +12,7 @@ resource "google_compute_subnetwork" "webapp_subnet" {
   ip_cidr_range = each.value.webapp_subnet_cidr
   region        = each.value.region
   network       = google_compute_network.vpc_network[each.key].self_link
+  private_ip_google_access = true
 }
 
 resource "google_compute_subnetwork" "db_subnet" {

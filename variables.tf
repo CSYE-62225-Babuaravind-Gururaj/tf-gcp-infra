@@ -262,8 +262,98 @@ variable "cloud_func_role" {
   description = "cloud function role"
 }
 
-variable "cloud_func_event_type" {
-  type  =  string
-  default = "google.cloud.pubsub.topic.v1.messagePublished"
-  description = "Event type for cloud function event trigger"
+# variable "cloud_func_event_type" {
+#   type  =  string
+#   default = "google.cloud.pubsub.topic.v1.messagePublished"
+#   description = "Event type for cloud function event trigger"
+# }
+
+variable "instance_group_manager" {
+  type = string
+  default = "app-instance-group-manager"
+  description = "Group manager for instance"
+}
+
+variable "named_port_type" {
+  type = string
+  default = "http"
+  description = "Request type in named port"
+}
+
+variable "cpu_utlization" {
+  type = number
+  default = 0.05
+  description = "CPU utilization percentage"
+}
+
+variable "max_replicas" {
+  type = number
+  default = 2
+  description = "Replicas max"
+}
+
+variable "min_replicas" {
+  type = number
+  default = 1
+  description = "Replicas min"
+}
+
+variable "https_protocol" {
+  type = string
+  default = "https"
+  description = "Request type"
+}
+
+variable "region_instance_name" {
+  type = string
+  default = "l7-xlb-backend-template"
+  description = "Region instance name"
+}
+
+variable "lb_machine_type" {
+  type = string
+  default = "n1-standard-1"
+  description = "Region machine type"
+}
+
+variable "lb_proxy" {
+  type = string
+  default = "projects/csye-6225-terraform-packer/global/sslCertificates/webapp-certificate"
+  description = "lb proxy"
+}
+
+# variable "lb_firewall_source_range" {
+#   type =  list(string)
+#   default = ["130.211.0.0/22", "35.191.0.0/16"]
+#   description = "firewall source range"
+# }
+
+variable "google_compute_firewall_name" {
+  type = string
+  default = "fw-allow-health-check"
+  description = "firewall name"
+}
+
+variable "health_check_name" {
+  type = string
+  default = "l7-xlb-basic-check"
+  description = "health check name"
+}
+
+variable "backend_service_name" {
+  type = string
+  default = "l7-xlb-backend-service"
+  description = "health check name"
+}
+
+variable "url_map_name" {
+  type = string
+  default = "regional-l7-xlb-map"
+  description = "url map name"
+}
+
+variable "forwarding_rule_name" {
+  type = string
+  default = "l7-xlb-forwarding-rule"
+  description = "forwarding rule name"
 }

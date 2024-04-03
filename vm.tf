@@ -12,9 +12,7 @@ resource "google_compute_instance" "custom_instance" {
 
   service_account {
     email  = google_service_account.service_account.email
-    scopes = [
-      "https://www.googleapis.com/auth/cloud-platform",
-    ]
+    scopes = ["logging-write", "monitoring-write", "pubsub"]
   }
 
   boot_disk {
@@ -47,7 +45,7 @@ resource "google_dns_record_set" "a_record" {
   type         = "A"
   ttl          = 300
   managed_zone = var.dns_zone_name
-  rrdatas      = [google_compute_instance.custom_instance[each.key].network_interface[0].access_config[0].nat_ip]
+  rrdatas      = [google_compute_global_address.load_balance_ip.address]
 }
 
 resource "google_service_account" "service_account" {

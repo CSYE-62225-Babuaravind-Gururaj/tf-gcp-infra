@@ -62,3 +62,7 @@ resource "google_sql_user" "users" {
   instance  = google_sql_database_instance.database_instance[each.key].name
   password  = random_password.password.result
 }
+
+resource "google_compute_global_address" "load_balance_ip" {
+  name          = "load-balance-ip"
+}
