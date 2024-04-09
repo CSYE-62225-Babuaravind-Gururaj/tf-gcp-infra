@@ -53,6 +53,11 @@ resource "google_service_account" "service_account" {
   display_name = "Service Account"
 }
 
+resource "google_service_account" "cloud_func_service_account" {
+  account_id   = "service-account-id"
+  display_name = "Cloud Function Service Account"
+}
+
 resource "google_project_iam_binding" "logging_admin_binding" {
   project = var.project
   role    = "roles/logging.admin"
@@ -71,11 +76,23 @@ resource "google_project_iam_binding" "monitoring_metric_writer_binding" {
   ]
 }
 
-resource "google_project_iam_binding" "kms_binding" {
+data "google_project" "project" {
+}
+ 
+resource "google_kms_crypto_key_iam_binding" "vm_enc_decrypt_binding" {
+  crypto_key_id = google_kms_crypto_key.terraform_vm_key.id
+  role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+ 
+  members = [
+    "serviceAccount:service-${data.google_project.project.number}@compute-system.iam.gserviceaccount.com",
+  ]
+}
+
+resource "google_project_iam_binding" "terraform_cloud_fn" {
   project = var.project
-  role    = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+  role    = "roles/run.invoker"
 
   members = [
-    "serviceAccount:${google_service_account.service_account.email}",
+    "serviceAccount:${google_service_account.cloud_func_service_account.email}",
   ]
 }

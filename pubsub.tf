@@ -50,9 +50,10 @@ resource "google_storage_bucket" "functions_bucket" {
   name          = "${var.project}-functions-bucket"
   location      = var.region
   force_destroy = true
-  # encryption {
-  #   default_kms_key_name = google_kms_crypto_key.storage_key.id
-  # }
+  encryption {
+    default_kms_key_name = google_kms_crypto_key.storage_key.id
+  }
+  depends_on = [google_kms_crypto_key_iam_binding.storage_bucket_enc_decrypt_binding]
 }
 resource "google_storage_bucket_object" "serverless_function_archive" {
   name   = "${data.archive_file.source.output_md5}.zip"
@@ -60,11 +61,11 @@ resource "google_storage_bucket_object" "serverless_function_archive" {
   source = data.archive_file.source.output_path
 }
 
-resource "google_project_iam_binding" "serverless_binding" {
-  project = var.project
-  role    = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+# resource "google_project_iam_binding" "serverless_binding" {
+#   project = var.project
+#   role    = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
 
-  members = [
-    "serviceAccount:${google_service_account.service_account.email}",
-  ]
-}
+#   members = [
+#     "serviceAccount:${google_service_account.service_account.email}",
+#   ]
+# }
