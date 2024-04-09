@@ -48,13 +48,23 @@ data "archive_file" "source" {
 
 resource "google_storage_bucket" "functions_bucket" {
   name          = "${var.project}-functions-bucket"
-  location      = "US"
+  location      = var.region
   force_destroy = true
+  # encryption {
+  #   default_kms_key_name = google_kms_crypto_key.storage_key.id
+  # }
 }
-
-//change it
 resource "google_storage_bucket_object" "serverless_function_archive" {
   name   = "${data.archive_file.source.output_md5}.zip"
   bucket = google_storage_bucket.functions_bucket.name
   source = data.archive_file.source.output_path
+}
+
+resource "google_project_iam_binding" "serverless_binding" {
+  project = var.project
+  role    = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+
+  members = [
+    "serviceAccount:${google_service_account.service_account.email}",
+  ]
 }
