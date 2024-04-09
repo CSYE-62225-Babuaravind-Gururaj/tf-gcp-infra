@@ -49,5 +49,5 @@ resource "google_cloudfunctions2_function_iam_member" "functions_invoker_member"
   cloud_function = google_cloudfunctions2_function.verify_email_function[each.key].name
 
   role   = var.cloud_func_role
-  member = "serviceAccount:${google_service_account.service_account.email}"
+  member = "serviceAccount:${google_service_account.cloud_func_service_account.email}"
 }

@@ -1,35 +1,35 @@
-# resource "google_kms_key_ring" "keyring" {
-#   name     = "cloud-key-ring1"
-#   location = var.region
-# }
+resource "google_kms_key_ring" "keyring" {
+  name     = "cloud-key-ring1"
+  location = var.region
+}
 
-# //CMEK setup
-# resource "google_kms_crypto_key" "vm_key" {
-#   name            = "vm-crypto-key"
-#   key_ring        = google_kms_key_ring.keyring.id
-#   rotation_period = "2592000s"
+//CMEK setup
+resource "google_kms_crypto_key" "vm_key" {
+  name            = "vm-crypto-key"
+  key_ring        = google_kms_key_ring.keyring.id
+  rotation_period = "2592000s"
 
-#   lifecycle {
-#     prevent_destroy = true
-#   }
-# }
+  lifecycle {
+    prevent_destroy = true
+  }
+}
 
-# resource "google_kms_crypto_key" "sql_key" {
-#   name            = "sql-key"
-#   key_ring        = google_kms_key_ring.keyring.id
-#   rotation_period = "2592000s"
+resource "google_kms_crypto_key" "sql_key" {
+  name            = "sql-key"
+  key_ring        = google_kms_key_ring.keyring.id
+  rotation_period = "2592000s"
 
-#   lifecycle {
-#     prevent_destroy = true
-#   }
-# }
+  lifecycle {
+    prevent_destroy = true
+  }
+}
 
-# resource "google_kms_crypto_key" "storage_key" {
-#   name            = "storage-key"
-#   key_ring        = google_kms_key_ring.keyring.id
-#   rotation_period = "2592000s"
+resource "google_kms_crypto_key" "storage_key" {
+  name            = "storage-key"
+  key_ring        = google_kms_key_ring.keyring.id
+  rotation_period = "2592000s"
 
-#   lifecycle {
-#     prevent_destroy = true
-#   }
-# }
+  lifecycle {
+    prevent_destroy = true
+  }
+}

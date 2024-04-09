@@ -131,3 +131,17 @@ resource "google_compute_global_forwarding_rule" "default" {
   target                = google_compute_target_https_proxy.lb_default[each.key].self_link
   ip_address            = google_compute_global_address.load_balance_ip.address
 }
+
+//service account for storage
+
+data "google_storage_project_service_account" "storage_bucket_account" {
+}
+ 
+resource "google_kms_crypto_key_iam_binding" "storage_bucket_enc_decrypt_binding" {
+  crypto_key_id =google_kms_crypto_key.terraform_bucket_storage_key.id
+  role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+ 
+  members = [
+    "serviceAccount:${data.google_storage_project_service_account.storage_bucket_account.email_address}"
+  ]
+}
