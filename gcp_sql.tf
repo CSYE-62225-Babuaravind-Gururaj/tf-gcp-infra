@@ -5,6 +5,13 @@ resource "google_service_networking_connection" "db_private_vpc_conn" {
   reserved_peering_ranges   = [google_compute_global_address.db_private_ip[each.key].name]
 }
 
+resource "google_project_service_identity" "cloudsql_sa" {
+  provider = google-beta
+
+  project = var.project
+  service = "sqladmin.googleapis.com"
+}
+
 resource "google_sql_database_instance" "database_instance" {
   for_each            = var.vpcs
   name                = "${each.key}-database-instance"
@@ -33,6 +40,8 @@ resource "google_sql_database_instance" "database_instance" {
       enabled            = true
     }
   }
+  
+  # encryption_key_name = google_kms_crypto_key.sql_key.id
 }
 
 resource "google_sql_database" "database" {
@@ -65,4 +74,14 @@ resource "google_sql_user" "users" {
 
 resource "google_compute_global_address" "load_balance_ip" {
   name          = "load-balance-ip"
+}
+
+resource "google_project_iam_binding" "sql_binding" {
+  project = var.project
+  role    = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+
+  members = [
+    # "serviceAccount:${google_service_account.service_account.email}",
+    "serviceAccount: service-313432889433@gs-project-accounts.iam.gserviceaccount.com"
+  ]
 }

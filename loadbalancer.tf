@@ -5,6 +5,10 @@ resource "google_compute_region_instance_template" "default" {
     auto_delete  = true
     source_image = var.image
     disk_size_gb = 100
+
+    # disk_encryption_key {
+    #   kms_key_self_link = google_kms_crypto_key.vm_key.id
+    # }
   }
   machine_type = var.lb_machine_type
  metadata_startup_script = templatefile("${path.module}/userdata.sh", {
