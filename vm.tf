@@ -80,7 +80,7 @@ data "google_project" "project" {
 }
  
 resource "google_kms_crypto_key_iam_binding" "vm_enc_decrypt_binding" {
-  crypto_key_id = google_kms_crypto_key.terraform_vm_key.id
+  crypto_key_id = google_kms_crypto_key.vm_key.id
   role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
  
   members = [

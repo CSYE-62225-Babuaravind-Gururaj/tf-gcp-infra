@@ -138,7 +138,7 @@ data "google_storage_project_service_account" "storage_bucket_account" {
 }
  
 resource "google_kms_crypto_key_iam_binding" "storage_bucket_enc_decrypt_binding" {
-  crypto_key_id =google_kms_crypto_key.terraform_bucket_storage_key.id
+  crypto_key_id = google_kms_crypto_key.storage_key.id
   role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
  
   members = [
