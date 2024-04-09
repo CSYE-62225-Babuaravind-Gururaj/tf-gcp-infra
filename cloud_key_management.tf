@@ -1,5 +1,5 @@
 resource "google_kms_key_ring" "keyring" {
-  name     = "cloud-key-ring1"
+  name     = "cloud-key-ring3"
   location = var.region
 }
 
