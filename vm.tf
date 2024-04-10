@@ -54,7 +54,7 @@ resource "google_service_account" "service_account" {
 }
 
 resource "google_service_account" "cloud_func_service_account" {
-  account_id   = "service-account-id"
+  account_id   = "cloud-func-service-account-id"
   display_name = "Cloud Function Service Account"
 }
 

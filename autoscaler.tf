@@ -28,7 +28,7 @@ resource "google_compute_region_autoscaler" "app_autoscaler" {
   autoscaling_policy {
     max_replicas    = var.max_replicas
     min_replicas    = var.min_replicas
-    cooldown_period = 60
+    cooldown_period = var.cool_down_period
     cpu_utilization {
       target = var.cpu_utlization
     }
