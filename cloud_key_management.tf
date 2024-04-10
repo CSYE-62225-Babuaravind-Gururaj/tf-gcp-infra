@@ -10,7 +10,7 @@ resource "google_kms_crypto_key" "vm_key" {
   rotation_period = "2592000s"
 
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 }
 
@@ -20,7 +20,7 @@ resource "google_kms_crypto_key" "sql_key" {
   rotation_period = "2592000s"
 
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 }
 
@@ -30,6 +30,6 @@ resource "google_kms_crypto_key" "storage_key" {
   rotation_period = "2592000s"
 
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 }

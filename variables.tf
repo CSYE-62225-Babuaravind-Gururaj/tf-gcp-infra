@@ -262,11 +262,16 @@ variable "cloud_func_role" {
   description = "cloud function role"
 }
 
-# variable "cloud_func_event_type" {
-#   type  =  string
-#   default = "google.cloud.pubsub.topic.v1.messagePublished"
-#   description = "Event type for cloud function event trigger"
-# }
+variable "cool_down_period" {
+  type  =  number
+  default = 180
+  description = "cool Down period"
+}
+
+variable "device_name" {
+  type  =  string
+  default = "cloud-device"
+}
 
 variable "instance_group_manager" {
   type = string

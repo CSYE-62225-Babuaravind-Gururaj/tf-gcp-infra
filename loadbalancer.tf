@@ -2,6 +2,7 @@ resource "google_compute_region_instance_template" "default" {
   for_each         = var.vpcs
   name = var.region_instance_name
   disk {
+    device_name = var.device_name
     auto_delete  = true
     source_image = var.image
     disk_size_gb = 100
